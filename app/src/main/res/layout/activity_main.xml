@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:text="图表框架" />
+
+    <com.sina.chartproject.view.CapitalChartView
+        android:id="@+id/char_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:capitalChartView_padding_bottom="10dp"
+        android:background="#40af"
+        app:capitalChartView_padding_left="50dp"
+        app:capitalChartView_padding_right="50dp"
+        app:capitalChartView_padding_top="10dp" />
+
+
+    <TextView
+        android:id="@+id/tv_start"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#000"
+        android:gravity="center"
+        android:text="开始绘制"
+        android:textColor="@color/white" />
+
+</LinearLayout>

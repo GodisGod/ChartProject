@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--图表属性-->
+    <declare-styleable name="ChartView">
+        <attr name="chart_padding_left" format="dimension" />
+        <attr name="chart_padding_right" format="dimension" />
+        <attr name="chart_padding_top" format="dimension" />
+        <attr name="chart_padding_bottom" format="dimension" />
+    </declare-styleable>
+
+    <!--美股财务-->
+    <declare-styleable name="CapitalChartView">
+        <attr name="capitalChartView_padding_left" format="dimension" />
+        <attr name="capitalChartView_padding_right" format="dimension" />
+        <attr name="capitalChartView_padding_top" format="dimension" />
+        <attr name="capitalChartView_padding_bottom" format="dimension" />
+    </declare-styleable>
+
+</resources>
