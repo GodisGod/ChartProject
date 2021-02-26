@@ -30,12 +30,6 @@ import java.util.List;
  */
 public class LineElement extends ElementView implements LineOuterGestureCallback {
 
-    private CapitalChartView chartView;
-
-    private ElementUtils elementUtils;
-    private Context context;
-    //折线图画笔
-    private Paint linePaint;
     //数据点
     public final ArrayList<Point> linePoints;
     //折线路径
@@ -62,7 +56,6 @@ public class LineElement extends ElementView implements LineOuterGestureCallback
 
     public LineElement(Context context, List<ElementData> list) {
         super(context);
-        this.context = context;
         this.list = list;
         drawList = new ArrayList<>();
 
@@ -79,27 +72,15 @@ public class LineElement extends ElementView implements LineOuterGestureCallback
                 needScroll = false;
             }
         }
-        QL.d("LHD  添加drawList = "+drawList.size());
-
-        //成功率画笔
-        linePaint = new Paint();
-        linePaint.setAntiAlias(true);
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setColor(ContextCompat.getColor(context, R.color.color_fa2b4c));
-        linePaint.setStrokeWidth(DisplayUtils.dip2px(context, 1));
+        QL.d("LHD  添加drawList = " + drawList.size());
 
         linePoints = new ArrayList<>();
         linePath = new Path();
 
-        elementUtils = new ElementUtils();
-
     }
-
-    private Canvas canvas;
 
     @Override
     public void draw(Canvas canvas, Rect mContentRect) {
-        this.canvas = canvas;
         //绘制折线
         drawLine(canvas, mContentRect);
         //绘制节点
@@ -118,7 +99,7 @@ public class LineElement extends ElementView implements LineOuterGestureCallback
 
     @Override
     public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
-        this.chartView = capitalView;
+        super.contentRect(capitalView, mContentRect, mDateRect);
         //收集绘制数据
         initDrawData(mContentRect);
     }
@@ -253,7 +234,6 @@ public class LineElement extends ElementView implements LineOuterGestureCallback
                 }
             }
         }
-
     }
 
     @Override

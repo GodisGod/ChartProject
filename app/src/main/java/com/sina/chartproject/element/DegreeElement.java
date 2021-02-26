@@ -135,6 +135,7 @@ public class DegreeElement extends ElementView {
 
     @Override
     public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
+        super.contentRect(capitalView, mContentRect, mDateRect);
         resetList();
         countYValue(mContentRect);
     }

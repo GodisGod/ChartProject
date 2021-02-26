@@ -80,6 +80,7 @@ public class OutlineElement extends ElementView {
 
     @Override
     public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
+        super.contentRect(capitalView, mContentRect, mDateRect);
         initData(mContentRect);
     }
 

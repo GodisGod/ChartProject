@@ -19,8 +19,11 @@ public class PaintView {
     protected Paint mDateLinePaint;
     //日期文字画笔
     protected Paint mDatePaint;
+    //折线图画笔
+    protected Paint linePaint;
 
     protected int dip1;
+    protected int dip2;
     protected int dip3;
     protected int dip6;
     protected int dip7;
@@ -31,6 +34,7 @@ public class PaintView {
 
     public PaintView(Context context) {
         dip1 = DisplayUtils.dip2px(context, 1);
+        dip2 = DisplayUtils.dip2px(context, 2);
         dip3 = DisplayUtils.dip2px(context, 3);
         dip6 = DisplayUtils.dip2px(context, 6);
         dip7 = DisplayUtils.dip2px(context, 7);
@@ -64,6 +68,14 @@ public class PaintView {
         mDatePaint.setTextSize(DisplayUtils.dip2px(context, 12));
         mDatePaint.setColor(isBlack ? ContextCompat.getColor(context, R.color.color_9a9ead)
                 : ContextCompat.getColor(context, R.color.color_747985));
+
+        //成功率画笔
+        linePaint = new Paint();
+        linePaint.setAntiAlias(true);
+        linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setColor(ContextCompat.getColor(context, R.color.color_fa2b4c));
+        linePaint.setStrokeWidth(DisplayUtils.dip2px(context, 1));
+
     }
 
 }

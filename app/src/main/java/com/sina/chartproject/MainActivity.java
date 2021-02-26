@@ -12,6 +12,7 @@ import com.sina.chartproject.data.ElementData;
 import com.sina.chartproject.element.DateElement;
 import com.sina.chartproject.element.DegreeElement;
 import com.sina.chartproject.element.ElementView;
+import com.sina.chartproject.element.HistogramElement;
 import com.sina.chartproject.element.LineElement;
 import com.sina.chartproject.element.OutlineElement;
 import com.sina.chartproject.view.BaseViewEngine;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             lineDatas2.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
 
+        HistogramElement histogramElement = new HistogramElement(this,lineDatas1);
+
         List<ElementView> elementViews = new ArrayList<>();
 
         LineElement lineElement1 = new LineElement(this, lineDatas1);
@@ -69,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
         degreeElement.setyValueList(yValues, yValues);
 
         elementViews.add(element);
-        elementViews.add(lineElement1);
+//        elementViews.add(lineElement1);
 //        elementViews.add(lineElement2);
         elementViews.add(dateElement);
         elementViews.add(degreeElement);
+        elementViews.add(histogramElement);
 
         TestViewEngine testViewEngine = new TestViewEngine(this);
         testViewEngine.setElementViews(elementViews);

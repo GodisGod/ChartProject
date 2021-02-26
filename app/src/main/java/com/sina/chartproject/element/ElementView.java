@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.sina.chartproject.utils.ElementUtils;
 import com.sina.chartproject.view.CapitalChartView;
 
 /**
@@ -13,9 +14,14 @@ import com.sina.chartproject.view.CapitalChartView;
  * 各个元素的基础类
  */
 public abstract class ElementView extends PaintView {
+    protected ElementUtils elementUtils;
+    protected CapitalChartView chartView;
+    protected Context context;
 
     public ElementView(Context context) {
         super(context);
+        this.context = context;
+        elementUtils = new ElementUtils();
     }
 
     /**
@@ -26,7 +32,9 @@ public abstract class ElementView extends PaintView {
      */
     public abstract void draw(Canvas canvas, Rect mContentRect);
 
-    public abstract void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect);
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
+        this.chartView = capitalView;
+    }
 
     public abstract void changeSkin();
 
