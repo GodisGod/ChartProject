@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         Random random = new Random();
         List<ElementData> lineDatas1 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             lineDatas1.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
         List<ElementData> lineDatas2 = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             lineDatas2.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         LineElement lineElement1 = new LineElement(this, lineDatas1);
         lineElement1.setLineConfig(R.color.color_508cee);
-        LineElement lineElement2 = new LineElement(this, lineDatas2);
+//        LineElement lineElement2 = new LineElement(this, lineDatas2);
 
         OutlineElement element = new OutlineElement(this);
         element.setHasXDivider(true, 2);
@@ -70,17 +70,23 @@ public class MainActivity extends AppCompatActivity {
 
         elementViews.add(element);
         elementViews.add(lineElement1);
-        elementViews.add(lineElement2);
+//        elementViews.add(lineElement2);
         elementViews.add(dateElement);
         elementViews.add(degreeElement);
 
         TestViewEngine testViewEngine = new TestViewEngine(this);
         testViewEngine.setElementViews(elementViews);
-
+        charView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                charView.setCurrentView(testViewEngine);
+            }
+        },300);
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                charView.setCurrentView(testViewEngine);
+//                charView.setCurrentView(testViewEngine);
+                charView.invalidate();
             }
         });
     }

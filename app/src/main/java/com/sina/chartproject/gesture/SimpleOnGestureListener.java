@@ -20,7 +20,7 @@ public class SimpleOnGestureListener {
         return false;
     }
 
-    public boolean onScroll(float x, float y, MotionEvent ev, float dx, float dy) {
+    public boolean onScroll(float downX, float downY, MotionEvent ev, float dx, float dy) {
         return false;
     }
 

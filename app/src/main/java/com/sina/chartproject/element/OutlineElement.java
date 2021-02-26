@@ -2,7 +2,6 @@ package com.sina.chartproject.element;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.sina.chartproject.R;
 import com.sina.chartproject.utils.DisplayUtils;
+import com.sina.chartproject.view.CapitalChartView;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class OutlineElement extends ElementView {
     }
 
     @Override
-    public void contentRect(Rect mContentRect, Rect mDateRect) {
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
         initData(mContentRect);
     }
 

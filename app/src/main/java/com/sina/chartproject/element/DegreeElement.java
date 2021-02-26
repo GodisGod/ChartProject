@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.sina.chartproject.utils.DisplayUtils;
+import com.sina.chartproject.view.CapitalChartView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,9 @@ public class DegreeElement extends ElementView {
     //纵坐标分为几段
     private int divide = 3;
     //整体绘制区域的高度
-    private int height;
+    private float height;
     //每一段的高度
-    public int perPxHeight;
+    public float perPxHeight;
 
     public DegreeElement(Context context) {
         super(context);
@@ -63,12 +64,12 @@ public class DegreeElement extends ElementView {
         for (int i = 0; i < divide + 1; i++) {
             //1、计算左侧刻度的坐标值
             Point leftPoint = new Point();
-            leftPoint.x = contentRect.left;
+            leftPoint.x = (int) contentRect.left;
             leftPoint.y = (int) (contentRect.top + perPxHeight * i);
             leftPoints.add(leftPoint);
             //2、计算右侧刻度的坐标值
             Point rightPoint = new Point();
-            rightPoint.x = contentRect.right;
+            rightPoint.x = (int) contentRect.right;
             rightPoint.y = (int) (contentRect.top + perPxHeight * i);
             rightPoints.add(rightPoint);
         }
@@ -133,7 +134,7 @@ public class DegreeElement extends ElementView {
     }
 
     @Override
-    public void contentRect(Rect mContentRect, Rect mDateRect) {
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
         resetList();
         countYValue(mContentRect);
     }

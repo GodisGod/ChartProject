@@ -16,6 +16,9 @@ import com.sina.chartproject.data.ElementData;
 import com.sina.chartproject.utils.DisplayUtils;
 import com.sina.chartproject.utils.ElementUtils;
 import com.sina.chartproject.utils.FloatUtils;
+import com.sina.chartproject.utils.QL;
+import com.sina.chartproject.view.CapitalChartView;
+import com.sina.chartproject.view.LineOuterGestureCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,9 @@ import java.util.List;
  * @date 2021/2/22
  * 画折线图
  */
-public class LineElement extends ElementView {
+public class LineElement extends ElementView implements LineOuterGestureCallback {
+
+    private CapitalChartView chartView;
 
     private ElementUtils elementUtils;
     private Context context;
@@ -38,18 +43,44 @@ public class LineElement extends ElementView {
 
     //原始数据
     private List<ElementData> list;
+    private List<ElementData> drawList;
     private float[] maxAndMinSuccessNum;
 
     /**
      * 全局变量
      */
-    private int height;
+    private float height;
     public float perPxWidth;
+
+    //滑动相关
+    //一页最多显示多少条数据
+    private int maxDataNum = 20;
+    private int startIndex = 0;
+    private int endIndex = 0;
+    //超过一屏数据则开启滑动
+    private boolean needScroll = false;
 
     public LineElement(Context context, List<ElementData> list) {
         super(context);
         this.context = context;
         this.list = list;
+        drawList = new ArrayList<>();
+
+        if (list != null) {
+            if (list.size() > maxDataNum) {
+                drawList.addAll(list.subList(0, maxDataNum));
+                startIndex = 0;
+                endIndex = maxDataNum;
+                needScroll = true;
+            } else {
+                drawList.addAll(list);
+                startIndex = 0;
+                endIndex = list.size();
+                needScroll = false;
+            }
+        }
+        QL.d("LHD  添加drawList = "+drawList.size());
+
         //成功率画笔
         linePaint = new Paint();
         linePaint.setAntiAlias(true);
@@ -64,40 +95,61 @@ public class LineElement extends ElementView {
 
     }
 
+    private Canvas canvas;
+
     @Override
     public void draw(Canvas canvas, Rect mContentRect) {
+        this.canvas = canvas;
         //绘制折线
         drawLine(canvas, mContentRect);
+        //绘制节点
+        for (int i = 0; i < linePoints.size(); i++) {
+            Point p = linePoints.get(i);
+            canvas.drawCircle(p.x, p.y, dip3, linePaint);
+            //绘制辅助数字
+            linePaint.setTextSize(dip8);
+            canvas.drawText("" + i, p.x, p.y, linePaint);
+        }
+
 
         //绘制渐变色背景
 
     }
 
     @Override
-    public void contentRect(Rect mContentRect, Rect mDateRect) {
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
+        this.chartView = capitalView;
         //收集绘制数据
         initDrawData(mContentRect);
     }
 
+    private Rect contentRect;
+
     private void initDrawData(Rect contentRect) {
+        this.contentRect = contentRect;
         linePoints.clear();
         linePath.reset();
         height = contentRect.height();
-        Log.d("LHD", "绘制区域 = " + contentRect.toShortString());
 
-        perPxWidth = contentRect.width() / ( list.size() - 1);
+        if (drawList.size() < maxDataNum) {
+            perPxWidth = contentRect.width() / (drawList.size() - 1);
+        } else {
+            perPxWidth = contentRect.width() / (maxDataNum - 1);
+        }
 
-        maxAndMinSuccessNum = elementUtils.getMaxData(list);
+        Log.d("LHD", "绘制区域 = " + contentRect.toShortString() + "  drawList = " + drawList.size() + "  perPxWidth = " + perPxWidth);
+
+        maxAndMinSuccessNum = elementUtils.getMaxData(drawList);
 
         float max = maxAndMinSuccessNum[0];
         float min = maxAndMinSuccessNum[1];
 
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < drawList.size(); i++) {
             Point point = new Point();
             point.x = (int) (contentRect.left + i * perPxWidth);
 
             //获取当前值
-            float value = list.get(i).getValue();
+            float value = drawList.get(i).getValue();
             //与最大值比较得出当前值的y轴坐标
             float diffValue;
             if (FloatUtils.isZero(max - min)) {
@@ -147,5 +199,72 @@ public class LineElement extends ElementView {
     public void setLinePaint(Paint linePaint) {
         this.linePaint = linePaint;
     }
+
+    @Override
+    public void onSingleClick() {
+
+    }
+
+    @Override
+    public void onLongPress(float x, float y) {
+
+    }
+
+    private int lastNewNum = 0;
+
+    @Override
+    public void onScrollAfterLongPress(float dx, float dy) {
+        Log.d("LHD", "折线图滑动 dx = " + dx + "  dy = " + dy + "  perPxWidth = " + perPxWidth);
+        float absDx = Math.abs(dx);
+        if (absDx > perPxWidth) {
+            QL.d("LHD 重新计算");
+            int newNum = (int) (dx / perPxWidth);
+            if (lastNewNum == newNum && endIndex < list.size() - 1) {
+                return;
+            }
+            lastNewNum = newNum;
+            int maxNum = list.size();
+            int diff = maxNum - endIndex - 1;
+            if (newNum <= diff) {
+                startIndex += newNum;
+                endIndex += newNum;
+            } else {
+                startIndex += diff;
+                endIndex += diff;
+            }
+            QL.d("LHD 新的start = " + startIndex + "  end = " + endIndex);
+            if (startIndex <= 0) {
+                startIndex = 0;
+            }
+            if (endIndex <= 20) {
+                startIndex = 0;
+                endIndex = 20;
+            }
+
+            QL.d("LHD  新的条目数量 newNum = " + newNum + " diff = " + diff + "  start = " + startIndex + "  end = " + endIndex);
+            if (needScroll) {
+                if (startIndex < endIndex && endIndex < list.size()) {
+                    drawList.clear();
+                    drawList.addAll(list.subList(startIndex, endIndex));
+                    initDrawData(contentRect);
+//                    draw(canvas, contentRect);
+                    chartView.invalidate();
+                    QL.d("LHD 重新绘制图表");
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onFling(float x, float y) {
+
+    }
+
+    @Override
+    public void onUp() {
+
+    }
+
 
 }

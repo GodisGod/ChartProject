@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.sina.chartproject.view.CapitalChartView;
+
 /**
  * @author hongda5
  * @date 2021/2/22
@@ -21,7 +23,7 @@ public class HistogramElement extends ElementView {
     }
 
     @Override
-    public void contentRect(Rect mContentRect, Rect mDateRect) {
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
 
     }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.sina.chartproject.view.CapitalChartView;
+
 /**
  * @author hongda5
  * @date 2021/2/22
@@ -24,7 +26,7 @@ public abstract class ElementView extends PaintView {
      */
     public abstract void draw(Canvas canvas, Rect mContentRect);
 
-    public abstract void contentRect(Rect mContentRect, Rect mDateRect);
+    public abstract void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect);
 
     public abstract void changeSkin();
 

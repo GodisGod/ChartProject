@@ -4,16 +4,21 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
 import com.sina.chartproject.R;
 import com.sina.chartproject.chart.BaseRenderView;
+import com.sina.chartproject.gesture.InnerChartCallback;
+import com.sina.chartproject.gesture.LineGestureDetector;
 import com.sina.chartproject.utils.DisplayUtils;
 
 /**
@@ -21,7 +26,7 @@ import com.sina.chartproject.utils.DisplayUtils;
  * @date 2021/2/22
  * 确定基本绘制区域和长按事件
  */
-public class CapitalChartView extends View {
+public class CapitalChartView extends GestureView {
 
     //整个view的宽度
     private int mWidth;
@@ -41,10 +46,6 @@ public class CapitalChartView extends View {
     protected Rect mDateRect;
     //当前显示的View
     private BaseViewEngine mCurrentView;
-
-    //按下的X的坐标
-    private float mPressX;
-    private LongPressRunnable mLongPressRunnable;
 
     //开关
     /**
@@ -73,7 +74,11 @@ public class CapitalChartView extends View {
         mContentRect = new Rect();
         //日期区域
         mDateRect = new Rect();
-        mLongPressRunnable = new LongPressRunnable();
+    }
+
+    @Override
+    public Rect getMainView() {
+        return mContentRect;
     }
 
     @Override
@@ -109,6 +114,7 @@ public class CapitalChartView extends View {
             mContentRect.set(mPaddingLeft, mPaddingTop, mWidth - mPaddingRight, mPaddingTop + contentHeight);
             mDateRect.set(mPaddingLeft, mContentRect.bottom, mWidth - mPaddingRight, mContentRect.bottom);
         }
+        Log.d("LHD", "getMainView mContentRect = " + mContentRect.toShortString());
     }
 
     /**
@@ -155,82 +161,6 @@ public class CapitalChartView extends View {
         if (mCurrentView != null) {
             mCurrentView.draw(canvas, this);
         }
-    }
-
-    private boolean isLongPress = false;
-
-    /**
-     * 长按
-     */
-    private class LongPressRunnable implements Runnable {
-        @Override
-        public void run() {
-            getParent().requestDisallowInterceptTouchEvent(true);
-            isLongPress = true;
-            if (mFocusChangedListener != null) {
-                mFocusChangedListener.showPopBoxView();
-            }
-        }
-    }
-
-    long downTime = 0;
-    float pressX = 0, pressY = 0, moveX = 0, moveY = 0;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                downTime = event.getDownTime();
-                mPressX = event.getX();
-                pressX = event.getX();
-                pressY = event.getY();
-                isLongPress = false;
-                if (mFocusChangedListener != null) {
-                    mFocusChangedListener.focusChanged(mPressX);
-                }
-                postDelayed(mLongPressRunnable, ViewConfiguration.getLongPressTimeout());
-                break;
-            case MotionEvent.ACTION_MOVE:
-                mPressX = event.getX();
-                if (mFocusChangedListener != null) {
-                    mFocusChangedListener.focusChanged(mPressX);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                getParent().requestDisallowInterceptTouchEvent(false);
-                removeCallbacks(mLongPressRunnable);
-                if (mFocusChangedListener != null) {
-                    mFocusChangedListener.hidePopBoxView();
-                }
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                getParent().requestDisallowInterceptTouchEvent(false);
-                removeCallbacks(mLongPressRunnable);
-                if (mFocusChangedListener != null) {
-                    mFocusChangedListener.hidePopBoxView();
-                }
-                break;
-        }
-        return true;
-    }
-
-    private OnFocusChangedListener mFocusChangedListener;
-
-    //当触摸发生变化的时候调用
-    public void setOnFocusChanged(OnFocusChangedListener listener) {
-        this.mFocusChangedListener = listener;
-    }
-
-    public void setNeedDate(boolean needDate) {
-        this.needDate = needDate;
-    }
-
-    public interface OnFocusChangedListener {
-        void focusChanged(float x);
-
-        void showPopBoxView();
-
-        void hidePopBoxView();
     }
 
 

@@ -7,6 +7,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import com.sina.chartproject.utils.QL;
+
 /**
  * @author: fulibo
  * 单点、滑动、滑动释放、长按、长按滑动、长按滑动释放、缩放
@@ -19,8 +21,8 @@ public class GestureDetectorImpl implements View.OnTouchListener {
 
     private GestureType mGestureType = GestureType.UNDEFINED;
 
-    private float mX;
-    private float mY;
+    //    private float mX;
+//    private float mY;
     private float mDownX;
     private float mDownY;
 
@@ -59,8 +61,8 @@ public class GestureDetectorImpl implements View.OnTouchListener {
 
     public GestureDetectorImpl(Context context, SimpleOnGestureListener l) {
         mLongPressTimeout = ViewConfiguration.getLongPressTimeout();
-        mTapTimeout       = ViewConfiguration.getTapTimeout();
-        mScaledTouchSlop  = ViewConfiguration.get(context).getScaledTouchSlop();
+        mTapTimeout = ViewConfiguration.getTapTimeout();
+        mScaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mScaledMaximumFlingVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
 
         mCallback = l;
@@ -69,8 +71,8 @@ public class GestureDetectorImpl implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent ev) {
         final int action = ev.getAction();
-        final float x    = ev.getX();
-        final float y    = ev.getY();
+        final float x = ev.getX();
+        final float y = ev.getY();
 
         initVelocityTracker();
         mVelocityTracker.addMovement(ev);
@@ -84,16 +86,16 @@ public class GestureDetectorImpl implements View.OnTouchListener {
                 recycleVelocityTracker();
 
                 v.postDelayed(mLongPressRunnable, mLongPressTimeout);
-                mX = mDownX = x;
-                mY = mDownY = y;
-
+//                mX = mDownX = x;
+//                mY = mDownY = y;
+                mDownX = x;
+                mDownY = y;
                 return true;
             }
 
             case MotionEvent.ACTION_MOVE: {
-                final float dx = (mX - x);
-                final float dy = (mY - y);
-
+                final float dx = (mDownX - x);
+                final float dy = (mDownY - y);
                 switch (mGestureType) {
                     case SCROLL:
                     case LONG_PRESS: {
@@ -102,8 +104,8 @@ public class GestureDetectorImpl implements View.OnTouchListener {
                             consumed = mCallback.onScroll(mDownX, mDownY, ev, dx, dy);
                         }
 
-                        mX = x;
-                        mY = y;
+//                        mX = x;
+//                        mY = y;
                         return consumed;
                     }
 
@@ -121,8 +123,8 @@ public class GestureDetectorImpl implements View.OnTouchListener {
                     break;
                 }
 
-                mX = x;
-                mY = y;
+//                mX = x;
+//                mY = y;
             }
             break;
 

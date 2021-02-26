@@ -2,16 +2,12 @@ package com.sina.chartproject.element;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.text.TextUtils;
 
-import androidx.core.content.ContextCompat;
-
-import com.sina.chartproject.R;
-import com.sina.chartproject.utils.DisplayUtils;
+import com.sina.chartproject.view.CapitalChartView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +42,7 @@ public class DateElement extends ElementView {
     }
 
     @Override
-    public void contentRect(Rect mContentRect, Rect mDateRect) {
+    public void contentRect(CapitalChartView capitalView, Rect mContentRect, Rect mDateRect) {
         resetList();
         countXValue(mContentRect);
     }
@@ -65,7 +61,7 @@ public class DateElement extends ElementView {
         for (int i = 0; i < totalCount; i++) {
             Point point = new Point();
             point.x = (int) (contentRect.left + perPxWidth * i);
-            point.y = contentRect.bottom;
+            point.y = (int) contentRect.bottom;
             xPointsList.add(point);
         }
         return perPxWidth;

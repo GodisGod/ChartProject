@@ -21,12 +21,4 @@ public interface InnerChartCallback {
 
     boolean onFling(float x, float y, MotionEvent ev, float dx, float dy);
 
-//    void onStopFling(MotionEvent ev);
-
-    boolean onScaleBegin(ScaleGestureDetector detector);
-
-    boolean onScale(ScaleGestureDetector detector);
-
-    void onScaleEnd(ScaleGestureDetector detector);
-
 }

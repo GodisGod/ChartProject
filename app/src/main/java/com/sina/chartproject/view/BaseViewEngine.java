@@ -3,9 +3,12 @@ package com.sina.chartproject.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.Rect;
+import android.util.Log;
 
 import com.sina.chartproject.element.DateElement;
 import com.sina.chartproject.element.ElementView;
+import com.sina.chartproject.element.LineElement;
 
 import java.util.List;
 
@@ -39,10 +42,15 @@ public abstract class BaseViewEngine {
             mDateRect = capitalView.getDateRect();
         }
 
-        //绘制每一个元素
+        //元素初始化
         if (elementViews != null && elementViews.size() > 0) {
             for (ElementView element : elementViews) {
-                element.contentRect(mContentRect, mDateRect);
+                element.contentRect(capitalView, mContentRect, mDateRect);
+                if (element instanceof LineOuterGestureCallback) {
+                    Log.d("LHD", "增加手势");
+                    //增加手势
+                    capitalView.addElementViewsGesture((LineOuterGestureCallback) element);
+                }
             }
         }
 
