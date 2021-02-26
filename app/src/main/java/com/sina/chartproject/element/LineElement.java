@@ -183,12 +183,12 @@ public class LineElement extends ElementView implements LineOuterGestureCallback
 
     @Override
     public void onSingleClick() {
-
+        QL.d("LHD  点击事件");
     }
 
     @Override
     public void onLongPress(float x, float y) {
-
+        QL.d("LHD  长按事件");
     }
 
     private int lastNewNum = 0;

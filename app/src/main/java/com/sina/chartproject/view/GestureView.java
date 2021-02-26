@@ -76,6 +76,11 @@ public abstract class GestureView extends View implements InnerChartCallback {
         if (gestureCallback != null) {
             gestureCallback.onSingleClick();
         }
+        if (callbacks != null && callbacks.size() > 0) {
+            for (LineOuterGestureCallback c : callbacks) {
+                c.onSingleClick();
+            }
+        }
     }
 
     @Override
@@ -85,6 +90,15 @@ public abstract class GestureView extends View implements InnerChartCallback {
             mCrossPress = true;
             return true;
         }
+
+        if (callbacks != null && callbacks.size() > 0) {
+            for (LineOuterGestureCallback c : callbacks) {
+                c.onLongPress(x, y);
+            }
+            mCrossPress = true;
+            return true;
+        }
+
         return false;
     }
 
