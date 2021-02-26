@@ -43,7 +43,7 @@ public class HistogramElement extends ElementView implements LineOuterGestureCal
     //超过一屏数据则开启滑动
     private boolean needScroll = false;
 
-    public HistogramElement(Context context,List<ElementData> list) {
+    public HistogramElement(Context context, List<ElementData> list) {
         super(context);
         this.list = list;
         drawList = new ArrayList<>();
@@ -69,11 +69,16 @@ public class HistogramElement extends ElementView implements LineOuterGestureCal
 
     @Override
     public void draw(Canvas canvas, Rect mContentRect) {
-
-        for (Point p : linePoints) {
-            canvas.drawRect(p.x - dip2, p.y, p.x + dip2, contentRect.bottom, linePaint);
+        for (int i = 0; i < linePoints.size(); i++) {
+            Point p = linePoints.get(i);
+            if (i == 0) {
+                canvas.drawRect(p.x, p.y, p.x + 2 * dip2, contentRect.bottom, linePaint);
+            } else if (i == linePoints.size() - 1) {
+                canvas.drawRect(contentRect.right - 2 * dip2, p.y, contentRect.right, contentRect.bottom, linePaint);
+            } else {
+                canvas.drawRect(p.x - dip2, p.y, p.x + dip2, contentRect.bottom, linePaint);
+            }
         }
-
     }
 
     @Override

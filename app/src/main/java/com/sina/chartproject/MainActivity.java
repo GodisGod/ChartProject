@@ -37,43 +37,51 @@ public class MainActivity extends AppCompatActivity {
 
         Random random = new Random();
         List<ElementData> lineDatas1 = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             lineDatas1.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
         List<ElementData> lineDatas2 = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 20; i++) {
             lineDatas2.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
 
-        HistogramElement histogramElement = new HistogramElement(this,lineDatas1);
+        List<ElementData> lineDatas3 = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            lineDatas3.add(new ElementData(i * Math.abs(random.nextInt(20))));
+        }
+
+        //柱状图
+        HistogramElement histogramElement = new HistogramElement(this,lineDatas3);
 
         List<ElementView> elementViews = new ArrayList<>();
-
+        //折线图1--10个点
         LineElement lineElement1 = new LineElement(this, lineDatas1);
         lineElement1.setLineConfig(R.color.color_508cee);
-//        LineElement lineElement2 = new LineElement(this, lineDatas2);
-
+        //折线图2--20个点
+        LineElement lineElement2 = new LineElement(this, lineDatas2);
+        lineElement2.setLineConfig(R.color.color_fba85c);
+        //轮廓图
         OutlineElement element = new OutlineElement(this);
         element.setHasXDivider(true, 2);
         element.setHasYDivider(true, 3);
-
+        //日期图
         DateElement dateElement = new DateElement(this);
         List<String> dates = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             dates.add("2021-02-" + i);
         }
         dateElement.setValues(dates);
-
+        //刻度线
         DegreeElement degreeElement = new DegreeElement(this);
         List<String> yValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             yValues.add("销售量" + i * 12323);
         }
         degreeElement.setyValueList(yValues, yValues);
-
+        //添加元素
         elementViews.add(element);
-//        elementViews.add(lineElement1);
-//        elementViews.add(lineElement2);
+        elementViews.add(lineElement1);
+        elementViews.add(lineElement2);
         elementViews.add(dateElement);
         elementViews.add(degreeElement);
         elementViews.add(histogramElement);
