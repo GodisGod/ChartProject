@@ -42,6 +42,8 @@ public class HistogramElement extends ElementView implements LineOuterGestureCal
     private int endIndex = 0;
     //超过一屏数据则开启滑动
     private boolean needScroll = false;
+    //区间计算--整体计算，根据区间的数据计算高度，还是根据全部数据计算每一条的高度
+    private boolean scape = true;
 
     public HistogramElement(Context context, List<ElementData> list) {
         super(context);
@@ -103,7 +105,7 @@ public class HistogramElement extends ElementView implements LineOuterGestureCal
 
         Log.d("LHD", "绘制区域 = " + contentRect.toShortString() + "  drawList = " + drawList.size() + "  perPxWidth = " + perPxWidth);
 
-        maxAndMinSuccessNum = elementUtils.getMaxData(drawList);
+        maxAndMinSuccessNum = elementUtils.getMaxData(scape ? drawList : list);
 
         float max = maxAndMinSuccessNum[0];
         float min = maxAndMinSuccessNum[1];
@@ -196,6 +198,10 @@ public class HistogramElement extends ElementView implements LineOuterGestureCal
     @Override
     public void onUp() {
 
+    }
+
+    public void setScape(boolean scape) {
+        this.scape = scape;
     }
 
 }

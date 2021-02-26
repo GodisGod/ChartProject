@@ -37,29 +37,31 @@ public class MainActivity extends AppCompatActivity {
 
         Random random = new Random();
         List<ElementData> lineDatas1 = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             lineDatas1.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
         List<ElementData> lineDatas2 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             lineDatas2.add(new ElementData(i * Math.abs(random.nextInt(20))));
         }
 
         List<ElementData> lineDatas3 = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
-            lineDatas3.add(new ElementData(i * Math.abs(random.nextInt(20))));
+            lineDatas3.add(new ElementData(i + 10));
         }
 
         //柱状图
-        HistogramElement histogramElement = new HistogramElement(this,lineDatas3);
-
+        HistogramElement histogramElement = new HistogramElement(this, lineDatas3);
+        histogramElement.setScape(false);
         List<ElementView> elementViews = new ArrayList<>();
-        //折线图1--10个点
+        //折线图1--50个点
         LineElement lineElement1 = new LineElement(this, lineDatas1);
         lineElement1.setLineConfig(R.color.color_508cee);
-        //折线图2--20个点
+        lineElement1.setScape(true);
+        //折线图2--50个点
         LineElement lineElement2 = new LineElement(this, lineDatas2);
         lineElement2.setLineConfig(R.color.color_fba85c);
+        lineElement2.setScape(false);
         //轮廓图
         OutlineElement element = new OutlineElement(this);
         element.setHasXDivider(true, 2);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 charView.setCurrentView(testViewEngine);
             }
-        },300);
+        }, 300);
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
